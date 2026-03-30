@@ -1,0 +1,36 @@
+<div class="container">
+  <h1>Latest Hacker News Jobs</h1>
+
+  <p *ngIf="loading">Loading jobs...</p>
+  <p *ngIf="error">{{ error }}</p>
+
+  <div class="job-list">
+    <div class="job-card" *ngFor="let job of jobs">
+      <a
+        *ngIf="job.url; else plainTitle"
+        [href]="job.url"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {{ job.title }}
+      </a>
+
+      <ng-template #plainTitle>
+        <a
+          [href]="'https://news.ycombinator.com/item?id=' + job.id"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ job.title }}
+        </a>
+      </ng-template>
+
+      <div class="poster">Posted by: {{ job.by }}</div>
+      <div class="date">Posted on: {{ formatDate(job.time) }}</div>
+    </div>
+  </div>
+
+  <button *ngIf="hasMoreJobs()" (click)="loadMore()" [disabled]="loading">
+    Load more
+  </button>
+</div>
